@@ -28,6 +28,13 @@ jobs:
       - name: Configure Pages
         uses: actions/configure-pages@v5
 
+      - name: Fetch Taoyuan parks
+        shell: bash
+        run: |
+          curl --fail --location --retry 3 \
+            "https://opendata.tycg.gov.tw/api/v1/dataset.api_access?rid=cc8663dc-51f4-4a4f-9da1-f3fc266dc0c2&format=json" \
+            --output "桃園市特色公園.json"
+
       - name: Upload static site
         uses: actions/upload-pages-artifact@v3
         with:

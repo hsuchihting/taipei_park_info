@@ -1,7 +1,9 @@
 const files = {
   taipei: "./臺北市公園基本資料.json",
   newTaipei: "./新北市公園_export.json",
-  disaster: "./防災公園資訊.json"
+  disaster: "./防災公園資訊.json",
+  taoyuan: "./桃園市特色公園.json",
+  taoyuanApi: "https://opendata.tycg.gov.tw/api/v1/dataset.api_access?rid=cc8663dc-51f4-4a4f-9da1-f3fc266dc0c2&format=json"
 };
 
 const state = {
@@ -18,7 +20,8 @@ const state = {
 const cityFilters = [
   ["all", "全部"],
   ["臺北市", "臺北"],
-  ["新北市", "新北"]
+  ["新北市", "新北"],
+  ["桃園市", "桃園"]
 ];
 
 const scenarioFilters = [
@@ -117,6 +120,40 @@ function normalizeNewTaipei(row) {
   };
 }
 
+function normalizeTaoyuan(row, index) {
+  const services = [];
+  if (clean(row.停車)) services.push("停車");
+  if (clean(row.廁所)) services.push("廁所");
+
+  return {
+    id: `ty-${index + 1}`,
+    sourceId: index + 1,
+    city: "桃園市",
+    name: clean(row.公園名稱),
+    englishName: "",
+    district: clean(row.區域),
+    type: inferType(row.公園名稱),
+    address: clean(row.地址),
+    management: "",
+    phone: "",
+    description: clean(row.特色),
+    longitude: 0,
+    latitude: 0,
+    areaM2: 0,
+    openingHours: "",
+    sports: uniqueList(row.設施).filter((item) => /單槓|滑板|BMX|極限|運動|Pump/i.test(item)),
+    recreation: uniqueList(row.設施),
+    services,
+    transit: "",
+    mapUrl: clean(row.地標),
+    playgroundType: "特色",
+    playgroundArea: 0,
+    playground: uniqueList(row.設施).slice(0, 24),
+    disaster: null,
+    completeness: "特色遊戲場"
+  };
+}
+
 function normalizeDisaster(row) {
   const amounts = Array.from({ length: 18 }, (_, index) => toNumber(row[`di_Amount${index + 1}`]));
   return {
@@ -137,17 +174,36 @@ async function loadJson(url) {
   return JSON.parse(text.replace(/^\uFEFF/, ""));
 }
 
+async function loadJsonSafe(url, fallback = []) {
+  try {
+    return await loadJson(url);
+  } catch (error) {
+    console.warn(`Failed to load ${url}`, error);
+    return fallback;
+  }
+}
+
+async function loadFirstAvailable(urls, fallback = []) {
+  for (const url of urls) {
+    const rows = await loadJsonSafe(url, null);
+    if (rows) return rows;
+  }
+  return fallback;
+}
+
 async function init() {
-  const [taipeiRows, newTaipeiRows, disasterRows] = await Promise.all([
+  const [taipeiRows, newTaipeiRows, disasterRows, taoyuanRows] = await Promise.all([
     loadJson(files.taipei),
     loadJson(files.newTaipei),
-    loadJson(files.disaster)
+    loadJson(files.disaster),
+    loadFirstAvailable([files.taoyuan, files.taoyuanApi])
   ]);
 
   const disasterMap = new Map(disasterRows.map((row) => [nameKey(row.pm_name), row]));
   state.parks = [
     ...taipeiRows.map((row) => normalizeTaipei(row, disasterMap)),
-    ...newTaipeiRows.map(normalizeNewTaipei)
+    ...newTaipeiRows.map(normalizeNewTaipei),
+    ...taoyuanRows.map(normalizeTaoyuan)
   ];
 
   state.selectedId = state.parks.find((park) => park.disaster)?.id || state.parks[0]?.id;
@@ -237,7 +293,8 @@ function searchText(park) {
     park.recreation.join(" "),
     park.services.join(" "),
     park.playground.join(" "),
-    park.transit
+    park.transit,
+    park.mapUrl
   ].join(" ").toLowerCase();
 }
 
@@ -308,6 +365,7 @@ function getTags(park) {
   if (park.playgroundType) tags.push(`${park.playgroundType}遊戲場`);
   if (park.sports.length) tags.push("運動設施");
   if (park.services.some((item) => item.includes("公廁") || item.includes("廁所"))) tags.push("公廁");
+  if (park.services.some((item) => item.includes("停車"))) tags.push("停車");
   if (park.services.some((item) => item.includes("涼亭"))) tags.push("涼亭");
   if (park.disaster?.complete) tags.push(`可容納 ${formatNumber(park.disaster.capacity)} 人`);
   return tags.filter(Boolean);
@@ -360,7 +418,7 @@ function renderDetail() {
     return;
   }
 
-  const googleMaps = park.address ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${park.city} ${park.address}`)}` : "";
+  const googleMaps = park.mapUrl || (park.address ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${park.city} ${park.address}`)}` : "");
   $("detail").innerHTML = `
     <div class="grid gap-5 xl:grid-cols-[1fr_300px]">
       <div>
