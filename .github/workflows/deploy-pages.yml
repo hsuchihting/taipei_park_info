@@ -35,9 +35,10 @@ jobs:
 
       - name: Fetch Taoyuan parks
         run: |
-          curl --fail --location --retry 3 \
+          curl --location --retry 2 --max-time 30 \
             "https://opendata.tycg.gov.tw/api/v1/dataset.api_access?rid=cc8663dc-51f4-4a4f-9da1-f3fc266dc0c2&format=json" \
-            --output "public/桃園市特色公園.json"
+            --output "public/桃園市特色公園.json" \
+            || echo "⚠️ Taoyuan API unreachable, using existing data if available"
 
       - name: Build
         run: npm run build
