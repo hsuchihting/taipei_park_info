@@ -25,20 +25,32 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Configure Pages
-        uses: actions/configure-pages@v5
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm install
 
       - name: Fetch Taoyuan parks
-        shell: bash
         run: |
           curl --fail --location --retry 3 \
             "https://opendata.tycg.gov.tw/api/v1/dataset.api_access?rid=cc8663dc-51f4-4a4f-9da1-f3fc266dc0c2&format=json" \
-            --output "桃園市特色公園.json"
+            --output "public/桃園市特色公園.json"
+
+      - name: Build
+        run: npm run build
+        env:
+          NUXT_APP_BASE_URL: /taipei_park_info/
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
 
       - name: Upload static site
         uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: .output/public
 
       - name: Deploy to GitHub Pages
         id: deployment
