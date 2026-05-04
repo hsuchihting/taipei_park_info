@@ -19,12 +19,12 @@ jobs:
         run: |
           curl --fail --location --retry 3 \
             "https://opendata.tycg.gov.tw/api/v1/dataset.api_access?rid=cc8663dc-51f4-4a4f-9da1-f3fc266dc0c2&format=json" \
-            --output "桃園市特色公園.json"
+            --output "public/桃園市特色公園.json"
 
       - name: Commit if changed
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add "桃園市特色公園.json"
+          git add "public/桃園市特色公園.json"
           git diff --cached --quiet || git commit -m "chore: update 桃園市特色公園.json"
           git push
