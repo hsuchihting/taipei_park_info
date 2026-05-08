@@ -1,21 +1,22 @@
 <template>
-  <div class="rounded-md border border-ink/10 bg-white p-4 shadow-soft">
+  <div class="rounded-md border-2 border-white bg-white/90 p-4 shadow-sticker backdrop-blur">
     <div class="flex flex-wrap items-center justify-between gap-2">
       <div>
-        <h2 class="font-semibold">座標分布</h2>
-        <p class="text-sm text-ink/60">台北市與防災公園可定位；新北資料目前以地址查詢為主</p>
+        <h2 class="font-black text-river">座標分布</h2>
+        <p class="text-sm font-medium text-ink/60">台北市與防災公園可定位；新北、桃園資料目前以地址查詢為主</p>
       </div>
-      <div class="flex gap-2 text-xs">
+      <div class="flex gap-2 text-xs font-bold">
         <span class="inline-flex items-center gap-1"><span class="h-2.5 w-2.5 rounded-full bg-moss"></span>公園</span>
         <span class="inline-flex items-center gap-1"><span class="h-2.5 w-2.5 rounded-full bg-river"></span>綠地/廣場</span>
         <span class="inline-flex items-center gap-1"><span class="h-2.5 w-2.5 rounded-full bg-clay"></span>防災</span>
       </div>
     </div>
-    <div class="relative mt-3 h-[275px] overflow-hidden rounded-md border border-ink/10 bg-[linear-gradient(135deg,#eef6ee,#e8f2f5)]">
-      <div class="absolute inset-0 opacity-70">
-        <div class="absolute left-[8%] top-[14%] h-[72%] w-[52%] rounded-full border border-white/70"></div>
-        <div class="absolute right-[9%] top-[18%] h-[58%] w-[38%] rounded-full border border-white/70"></div>
-        <div class="absolute bottom-[16%] left-[20%] h-1 w-[68%] rotate-[-18deg] rounded-full bg-river/20"></div>
+    <div class="relative mt-3 h-[275px] overflow-hidden rounded-md border-2 border-sky/20 bg-[linear-gradient(180deg,#7dd3fc_0%,#dff7ff_48%,#bbf7d0_49%,#86efac_100%)]">
+      <div class="absolute inset-0 opacity-80">
+        <div class="absolute left-[8%] top-[16%] h-10 w-24 rounded-full bg-white/75 before:absolute before:left-5 before:-top-4 before:h-12 before:w-12 before:rounded-full before:bg-white/75 after:absolute after:right-5 after:-top-2 after:h-10 after:w-10 after:rounded-full after:bg-white/75"></div>
+        <div class="absolute right-[12%] top-[12%] h-12 w-12 rounded-full bg-sun"></div>
+        <div class="absolute bottom-[18%] left-[15%] h-4 w-[72%] rotate-[-10deg] rounded-full bg-sand/80"></div>
+        <div class="absolute bottom-8 left-[10%] h-3 w-3 rounded-full bg-flower shadow-[24px_-6px_0_#facc15,54px_10px_0_#fb7185,84px_-2px_0_#f97316,124px_8px_0_#facc15]"></div>
       </div>
       <button
         v-for="point in mapPoints"
@@ -26,9 +27,9 @@
         class="absolute -translate-x-1/2 -translate-y-1/2 rounded-full shadow"
         @click="selectPark(point.id)"
       />
-      <div v-if="selectedPark" class="absolute bottom-3 left-3 right-3 rounded-md bg-white/95 p-3 shadow-soft">
-        <div class="font-semibold">{{ selectedPark.name }}</div>
-        <div class="mt-1 truncate text-sm text-ink/60">{{ selectedPark.address || '尚無地址資料' }}</div>
+      <div v-if="selectedPark" class="absolute bottom-3 left-3 right-3 rounded-md border-2 border-white bg-white/95 p-3 shadow-sticker">
+        <div class="font-black text-moss">{{ selectedPark.name }}</div>
+        <div class="mt-1 truncate text-sm font-medium text-ink/60">{{ selectedPark.address || '尚無地址資料' }}</div>
       </div>
     </div>
   </div>
@@ -55,7 +56,7 @@ const mapPoints = computed(() => {
 
 function markerClass(id: string, disaster: unknown, type: string) {
   const color = disaster ? 'bg-clay' : type === '公園' ? 'bg-moss' : 'bg-river'
-  const size = id === selectedId.value ? 'h-4 w-4 ring-4 ring-white' : 'h-2.5 w-2.5'
+  const size = id === selectedId.value ? 'h-5 w-5 ring-4 ring-white' : 'h-3 w-3'
   return `${size} ${color}`
 }
 </script>

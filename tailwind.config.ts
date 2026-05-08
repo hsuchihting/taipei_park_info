@@ -4,15 +4,22 @@ export default {
   theme: {
     extend: {
       colors: {
-        ink: '#1d2a24',
-        moss: '#2f6f4e',
-        leaf: '#5f8f4f',
-        river: '#3b82a0',
-        clay: '#b4532f',
-        mist: '#f3f7f1'
+        ink: '#173b2f',
+        moss: '#16a34a',
+        leaf: '#84cc16',
+        river: '#0ea5e9',
+        clay: '#f97316',
+        mist: '#eefbff',
+        sky: '#38bdf8',
+        cloud: '#f8fdff',
+        grass: '#22c55e',
+        flower: '#fb7185',
+        sun: '#facc15',
+        sand: '#fff7ad'
       },
       boxShadow: {
-        soft: '0 18px 45px rgba(29, 42, 36, 0.12)'
+        soft: '0 18px 45px rgba(14, 165, 233, 0.16)',
+        sticker: '0 8px 0 rgba(23, 59, 47, 0.08), 0 18px 35px rgba(23, 59, 47, 0.12)'
       }
     }
   }

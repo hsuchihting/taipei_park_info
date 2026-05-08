@@ -1,5 +1,5 @@
 <template>
-  <div class="rounded-md border border-ink/10 bg-white p-5 shadow-soft">
+  <div class="rounded-md border-2 border-white bg-white/90 p-5 shadow-sticker backdrop-blur">
     <div v-if="!selectedPark" class="flex h-full min-h-[260px] items-center justify-center text-center text-ink/60">
       從左側選擇一座公園，查看完整資訊。
     </div>
@@ -11,19 +11,19 @@
               <span
                 v-for="t in getParkTags(selectedPark)"
                 :key="t"
-                class="rounded px-2 py-1 text-xs font-medium"
-                :class="t.includes('容納') ? 'bg-clay/10 text-clay' : 'bg-ink/5 text-ink/70'"
+                class="rounded-full px-3 py-1 text-xs font-extrabold shadow-sm"
+                :class="t.includes('容納') ? 'bg-clay/15 text-clay' : 'bg-sand text-moss'"
               >{{ t }}</span>
             </div>
-            <h2 class="mt-3 text-2xl font-semibold">{{ selectedPark.name }}</h2>
-            <p v-if="selectedPark.englishName" class="mt-1 text-sm text-ink/50">{{ selectedPark.englishName }}</p>
+            <h2 class="mt-3 text-3xl font-black text-ink">{{ selectedPark.name }}</h2>
+            <p v-if="selectedPark.englishName" class="mt-1 text-sm font-semibold text-river">{{ selectedPark.englishName }}</p>
           </div>
           <a
             v-if="googleMapsUrl"
             :href="googleMapsUrl"
             target="_blank"
             rel="noreferrer"
-            class="rounded-md bg-ink px-4 py-2 text-sm font-medium text-white transition hover:bg-moss"
+            class="rounded-md bg-river px-4 py-2 text-sm font-extrabold text-white shadow-sticker transition hover:bg-moss"
           >開啟地圖</a>
         </div>
 
@@ -38,7 +38,7 @@
           <InfoCard label="資料完整度" :value="selectedPark.completeness" />
         </dl>
 
-        <p v-if="selectedPark.description" class="mt-5 max-h-28 overflow-auto rounded-md bg-mist p-4 text-sm leading-6 text-ink/75">
+        <p v-if="selectedPark.description" class="mt-5 max-h-28 overflow-auto rounded-md border-2 border-sky/20 bg-cloud p-4 text-sm font-medium leading-6 text-ink/75">
           {{ selectedPark.description }}
         </p>
 
@@ -51,9 +51,9 @@
 
       <aside class="space-y-4">
         <DisasterPanel :park="selectedPark" />
-        <div class="rounded-md border border-ink/10 bg-mist p-4">
-          <h3 class="font-semibold">交通資訊</h3>
-          <p class="mt-2 text-sm leading-6 text-ink/70">{{ selectedPark.transit || '尚無資料' }}</p>
+        <div class="rounded-md border-2 border-sky/20 bg-cloud p-4">
+          <h3 class="font-black text-river">交通資訊</h3>
+          <p class="mt-2 text-sm font-medium leading-6 text-ink/70">{{ selectedPark.transit || '尚無資料' }}</p>
         </div>
       </aside>
     </div>
