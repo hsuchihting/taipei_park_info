@@ -1,6 +1,6 @@
-# 北北桃公園探索
+# 北北桃中公園探索
 
-整合臺北市、新北市、桃園市公園資料的靜態網站，提供篩選、排序、地圖標示與防災資訊查詢。
+整合臺北市、新北市、桃園市、臺中市公園資料的靜態網站，提供篩選、排序、地圖標示與防災資訊查詢。
 
 **線上預覽**：[hsuchihting.github.io/taipei_park_info](https://hsuchihting.github.io/taipei_park_info/)
 
@@ -12,6 +12,7 @@
 | 新北市公園資料 | 新北市 | 手動更新 |
 | 防災公園資訊 | 臺北市 | 手動更新 |
 | 桃園市特色公園 | 桃園市 | GitHub Actions 每週自動抓取 |
+| 共融式遊戲場 | 臺中市 | 手動更新 |
 
 ## 技術架構
 
@@ -41,7 +42,8 @@
 │   ├── 臺北市公園基本資料.json
 │   ├── 新北市公園_export.json
 │   ├── 防災公園資訊.json
-│   └── 桃園市特色公園.json    # 由 CI 自動產生
+│   ├── 桃園市特色公園.json    # 由 CI 自動產生
+│   └── 共融式遊戲場.JSON      # 臺中市共融式遊戲場
 └── .github/workflows/
     ├── deploy-pages.yml       # Push main 時自動建置並部署
     └── update-taoyuan-data.yml # 每週一抓取桃園公園資料並 commit

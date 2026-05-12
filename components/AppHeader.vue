@@ -8,8 +8,8 @@
     </div>
     <div class="mx-auto grid max-w-7xl gap-5 px-4 py-5 sm:px-6 lg:grid-cols-[1fr_auto] lg:px-8">
       <div class="relative">
-        <p class="inline-flex rounded-full bg-white/80 px-3 py-1 text-sm font-bold text-river shadow-soft">台北市、新北市、桃園市與防災公園資料整合</p>
-        <h1 class="mt-3 text-3xl font-black tracking-normal text-ink sm:text-5xl">北北桃放電好幫手</h1>
+        <p class="inline-flex rounded-full bg-white/80 px-3 py-1 text-sm font-bold text-river shadow-soft">台北市、新北市、桃園市、臺中市與防災公園資料整合</p>
+        <h1 class="mt-3 text-3xl font-black tracking-normal text-ink sm:text-5xl">北北桃中放電好幫手</h1>
         <p class="mt-2 max-w-2xl text-sm font-medium leading-6 text-ink/75 sm:text-base">找遊具、找草地、找可以跑跳的城市小天地。</p>
       </div>
       <div class="relative grid grid-cols-3 gap-2 text-center text-sm">

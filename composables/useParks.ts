@@ -169,6 +169,40 @@ function normalizeTaoyuan(row: Row, index: number): Park {
   }
 }
 
+function normalizeTaichung(row: Row, index: number): Park {
+  const name = clean(row.location)
+  const address = clean(row.address)
+  const district = clean(row.district)
+  const mapUrl = clean(row.link) || `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`臺中市 ${address || name}`)}`
+  return {
+    id: `tc-${clean(row.number) || index + 1}`,
+    sourceId: clean(row.number) || index + 1,
+    city: '臺中市',
+    name,
+    englishName: '',
+    district,
+    type: inferType(name),
+    address,
+    management: '',
+    phone: '',
+    description: '臺中市共融式遊戲場',
+    longitude: toNum(row.longitude),
+    latitude: toNum(row.latitude),
+    areaM2: 0,
+    openingHours: '',
+    sports: [],
+    recreation: ['共融式遊戲場'],
+    services: [],
+    transit: '',
+    mapUrl,
+    playgroundType: '共融',
+    playgroundArea: 0,
+    playground: ['共融式遊戲場'],
+    disaster: null,
+    completeness: '共融遊戲場'
+  }
+}
+
 const scorePark = (p: Park) =>
   (p.disaster ? 8 : 0) + (p.playgroundType ? 4 : 0) + (p.sports.length ? 2 : 0) +
   (p.services.length ? 2 : 0) + Math.min(p.areaM2 / 50000, 3)
@@ -199,11 +233,12 @@ export function useParks() {
   async function loadData() {
     loading.value = true
     try {
-      const [taipeiRows, newTaipeiRows, disasterRows, taoyuanRows] = await Promise.all([
+      const [taipeiRows, newTaipeiRows, disasterRows, taoyuanRows, taichungRows] = await Promise.all([
         fetchJson('/臺北市公園基本資料.json'),
         fetchJson('/新北市公園_export.json'),
         fetchJson('/防災公園資訊.json'),
-        fetchJsonSafe('/桃園市特色公園.json')
+        fetchJsonSafe('/桃園市特色公園.json'),
+        fetchJsonSafe('/共融式遊戲場.JSON')
       ])
 
       const disasterMap = new Map<string, Row>(
@@ -213,7 +248,8 @@ export function useParks() {
       parks.value = [
         ...(taipeiRows as Row[]).map(r => normalizeTaipei(r, disasterMap)),
         ...(newTaipeiRows as Row[]).map(r => normalizeNewTaipei(r)),
-        ...(taoyuanRows as Row[]).map((r, i) => normalizeTaoyuan(r, i))
+        ...(taoyuanRows as Row[]).map((r, i) => normalizeTaoyuan(r, i)),
+        ...(taichungRows as Row[]).filter(r => clean(r.location)).map((r, i) => normalizeTaichung(r, i))
       ]
 
       selectedId.value = parks.value.find(p => p.disaster)?.id ?? parks.value[0]?.id ?? null

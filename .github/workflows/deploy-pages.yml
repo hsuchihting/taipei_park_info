@@ -44,6 +44,10 @@ jobs:
         run: |
           node -e "const fs=require('fs'); const p='public/桃園市特色公園.json'; const rows=JSON.parse(fs.readFileSync(p,'utf8').replace(/^\uFEFF/,'')); if (!Array.isArray(rows) || rows.length === 0) throw new Error('Taoyuan parks data is missing'); console.log('Taoyuan parks:', rows.length)"
 
+      - name: Verify Taichung playgrounds
+        run: |
+          node -e "const fs=require('fs'); const p='public/共融式遊戲場.JSON'; const rows=JSON.parse(fs.readFileSync(p,'utf8').replace(/^\uFEFF/,'')); const count=Array.isArray(rows) ? rows.filter(r => String(r.location || '').trim()).length : 0; if (!count) throw new Error('Taichung playground data is missing'); console.log('Taichung playgrounds:', count)"
+
       - name: Build
         run: npm run build
         env:

@@ -3,7 +3,7 @@
     <div class="flex flex-wrap items-center justify-between gap-2">
       <div>
         <h2 class="font-black text-river">座標分布</h2>
-        <p class="text-sm font-medium text-ink/60">台北市與防災公園可定位；新北、桃園資料目前以地址查詢為主</p>
+        <p class="text-sm font-medium text-ink/60">台北市、臺中市與防災公園可定位；新北、桃園資料目前以地址查詢為主</p>
       </div>
       <div class="flex gap-2 text-xs font-bold">
         <span class="inline-flex items-center gap-1"><span class="h-2.5 w-2.5 rounded-full bg-moss"></span>公園</span>
