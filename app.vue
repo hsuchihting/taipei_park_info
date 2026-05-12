@@ -15,16 +15,20 @@
         <ParkFilters />
         <ParkList />
       </aside>
-      <section class="grid gap-4 lg:grid-rows-[360px_minmax(0,1fr)]">
-        <ParkMap />
+      <section class="grid gap-4">
         <ParkDetail />
       </section>
     </main>
+    <footer class="mx-auto max-w-7xl px-4 pb-6 text-center text-sm font-bold text-river/80 sm:px-6 lg:px-8">
+      Copyright © {{ currentYear }} by Hsuchihting
+    </footer>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 const { loadData } = useParks()
+const currentYear = ref(new Date().getFullYear())
+
 onMounted(loadData)
 </script>
