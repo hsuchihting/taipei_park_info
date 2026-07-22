@@ -36,10 +36,17 @@ jobs:
 
       - name: Fetch Taoyuan parks
         run: |
-          curl --fail --location --retry 2 --max-time 30 \
+          temporary_file="$(mktemp)"
+          if curl --fail --location --retry 2 --max-time 30 \
             "https://opendata.tycg.gov.tw/api/v1/dataset.api_access?rid=cc8663dc-51f4-4a4f-9da1-f3fc266dc0c2&format=json" \
-            --output "public/桃園市特色公園.json" \
-            || echo "⚠️ Taoyuan API unreachable, using existing data if available"
+            --output "$temporary_file" \
+            && node -e "const fs=require('fs'); const rows=JSON.parse(fs.readFileSync(process.argv[1],'utf8').replace(/^\\uFEFF/,'')); if (!Array.isArray(rows) || rows.length === 0) throw new Error('Taoyuan API returned no parks')" "$temporary_file"; then
+            mv "$temporary_file" "public/桃園市特色公園.json"
+            echo "Taoyuan parks data updated"
+          else
+            rm -f "$temporary_file"
+            echo "⚠️ Taoyuan API unavailable or invalid, using committed data"
+          fi
 
       - name: Verify Taoyuan parks
         run: |
