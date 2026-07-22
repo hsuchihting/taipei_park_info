@@ -16,28 +16,21 @@
 
 ## 技術架構
 
-- **框架**：Nuxt 3 + Vue 3（`ssr: false` 靜態輸出）
-- **樣式**：Tailwind CSS（自訂色彩：`ink`、`moss`、`leaf`、`river`、`clay`、`mist`）
+- **框架**：Nuxt 4 + Vue 3（`ssr: false` 靜態輸出）
+- **樣式**：Tailwind CSS 4 + Vite plugin（自訂色彩：`ink`、`moss`、`leaf`、`river`、`clay`、`mist`）
 - **部署**：GitHub Pages（`nuxt generate` → `.output/public`）
 - **自動化**：GitHub Actions
 
 ## 專案結構
 
 ```
-├── app.vue                    # 根元件，載入資料
+├── app/
+│   ├── app.vue                # 根元件，載入資料
+│   ├── assets/css/main.css    # Tailwind 4 theme 與全域樣式
+│   ├── components/            # Vue 元件
+│   └── composables/           # 核心狀態與資料邏輯
 ├── nuxt.config.ts             # Nuxt 設定（base URL、ssr: false）
-├── tailwind.config.ts         # 自訂主題色彩
-├── composables/
-│   └── useParks.ts            # 核心狀態管理、資料正規化、篩選邏輯
-├── components/
-│   ├── AppHeader.vue          # 標題與統計數字
-│   ├── ParkFilters.vue        # 搜尋、城市、情境、行政區、排序
-│   ├── ParkList.vue           # 公園列表
-│   ├── ParkMap.vue            # 公園地圖標點
-│   ├── ParkDetail.vue         # 公園詳細資訊
-│   ├── InfoCard.vue           # 欄位卡片元件
-│   ├── ChipSection.vue        # 設施標籤區塊
-│   └── DisasterPanel.vue      # 防災資訊面板
+├── tsconfig.json              # Nuxt 4 project references
 ├── public/
 │   ├── 臺北市公園基本資料.json
 │   ├── 新北市公園_export.json
@@ -61,8 +54,9 @@ npm run dev
 ## 建置預覽
 
 ```bash
+npm run typecheck
 npm run build    # 輸出至 .output/public
-npm run preview
+npx serve .output/public
 ```
 
 ## GitHub Pages 部署
