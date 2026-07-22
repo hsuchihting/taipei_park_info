@@ -1,6 +1,11 @@
+import tailwindcss from '@tailwindcss/vite'
+
 export default defineNuxtConfig({
-  modules: ['@nuxtjs/tailwindcss'],
   ssr: false,
+  css: ['~/assets/css/main.css'],
+  vite: {
+    plugins: [tailwindcss()]
+  },
   app: {
     baseURL: process.env.NUXT_APP_BASE_URL ?? '/'
   }

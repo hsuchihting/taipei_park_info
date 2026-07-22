@@ -60,7 +60,7 @@
 <script setup lang="ts">
 const { city, scenario, district, sort, search, districts } = useParks()
 
-const cityOptions = [
+const cityOptions: Array<[string, string]> = [
   ['all', '全部'],
   ['臺北市', '臺北'],
   ['新北市', '新北'],
@@ -68,7 +68,7 @@ const cityOptions = [
   ['臺中市', '臺中']
 ]
 
-const scenarioOptions = [
+const scenarioOptions: Array<[string, string]> = [
   ['all', '全部'],
   ['family', '親子'],
   ['sport', '運動'],

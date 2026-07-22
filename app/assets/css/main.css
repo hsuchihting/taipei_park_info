@@ -1,0 +1,25 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ink: #173b2f;
+  --color-moss: #16a34a;
+  --color-leaf: #84cc16;
+  --color-river: #0ea5e9;
+  --color-clay: #f97316;
+  --color-mist: #eefbff;
+  --color-sky: #38bdf8;
+  --color-cloud: #f8fdff;
+  --color-grass: #22c55e;
+  --color-flower: #fb7185;
+  --color-sun: #facc15;
+  --color-sand: #fff7ad;
+  --shadow-soft: 0 18px 45px rgba(14, 165, 233, 0.16);
+  --shadow-sticker: 0 8px 0 rgba(23, 59, 47, 0.08), 0 18px 35px rgba(23, 59, 47, 0.12);
+}
+
+@layer base {
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+}
